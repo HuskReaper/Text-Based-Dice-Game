@@ -1,1 +1,3 @@
-# Text-Based-Game
+# Text-Based-Dice-Game
+
+Basic project for school.

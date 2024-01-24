@@ -1,49 +1,64 @@
-# Imports # 
-import os, time, random, colorama
-from colorama import Fore, Back, Style, init
-init(autoreset=True)
+import os, random, time, colorama ## Importing needed libraries.
+from colorama import Fore as F
+from colorama import Back as B
+colorama.init(autoreset=True) ## Resets line color to default each line. Makes coloring text easier. ##
 
-# Data #
-player_info = {
-    'name': input("Name > "),
-    'level': 1,
-    'attack': random.randint(25,37),
-    'defense': 10,
-    'weapon': 'Basic Sword'
-}
+'''
+Code Scheme / Idea
 
-enemy_names = [
-    "Witch", "Giant Spider", "Vampire"
-]
+Make a dice game that the player can roll 2 dice and combine the score.
 
-enemy_info = {
-    'health': 100,
-    'defense': random.randint(5, 15),
-    'level': 1
-}
+If the score is 7 or 11 the player wins, if its 2, 3, or 12 the player loses, if none of them occur, repeat the round.
 
-# Functions #
-def typewriter(sentence):
-    for char in sentence:
-        time.sleep(0.1)
-        print(char, end='', flush=True)
+Criteria:
+*The user should be displayed different information like the round status with print functions.
+*The user should be able to select between re rolling or ending the game.
 
-# Code #
-player_dead = False
-turn = 'player'
+'''
+### FUNCTIONS ###
+def roll_dice():
+    dice1 = random.randint(1, 6) ## Gives a random value from 1 to 6 to the dices. ##
+    dice2 = random.randint(1, 6)
 
-typewriter("You wake up in a cave, you can't remember how you got there.")
+    selection = input("Write R to roll dices. Write Q to quit. > ").upper().strip() 
+    print()
+    
+    if selection == "R":
+        print("Rolling a dice...")
+        time.sleep(2)
+        print(f"You rolled a {F.CYAN}{dice1}!")
+        time.sleep(2)
+        print("Rolling next dice...")
+        time.sleep(2)
+        print(f"You rolled a {F.CYAN}{dice2}!")
+    
+    else:
+        os.system('cls')
+        print(f"{F.RED}Closing Game...")
+        
+    return dice1 + dice2 ## Returns dice score ##
 
+def checkscore(score):
+    if score == 7 or score == 11:
+        os.system('cls')
+        print(f"{F.GREEN}You win! Your dice score was: {score}")
+        gameover = True
+        
+    elif score == 2 or score == 3 or score == 12:
+        os.system('cls')
+        print(f"{F.RED}You Lose. Your dice score was: {score}")
+        gameover = True
+    
+    else:
+        print(f"The score was {score}, the game will continue.\n")
 
-os.system("clear")
+### CODE ###
+gameover = False
 
-try:
-    match turn:
-        case 'player': 
-            pass
-        case 'enemy':
-            pass
+print(f"{F.BLUE}Angel's Dice Game")
+user_name = input(f"Welcome to the game, what is your name? > ")
+os.system('cls')
 
-except:
-    os.system("clear")
-    print(f"{Fore.RED}The app has stopped due to a missing value.")
+while not gameover:
+    score = roll_dice()
+    checkscore(score)
