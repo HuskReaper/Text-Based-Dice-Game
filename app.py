@@ -1,4 +1,4 @@
-import os, random, time, colorama ## Importing needed libraries.
+import os, random, time, colorama, sys ## Importing needed libraries.
 from colorama import Fore as F
 from colorama import Back as B
 colorama.init(autoreset=True) ## Resets line color to default each line. Makes coloring text easier. ##
@@ -31,21 +31,25 @@ def roll_dice():
         print("Rolling next dice...")
         time.sleep(2)
         print(f"You rolled a {F.CYAN}{dice2}!")
+        
+        if dice1 == dice2:
+            print(f"{F.CYAN}Its a pair!")
     
-    else:
-        os.system('cls')
+    elif selection == "Q":
+        os.system('clear')
         print(f"{F.RED}Closing Game...")
+        sys.exit("Goodbye!")
         
     return dice1 + dice2 ## Returns dice score ##
 
 def checkscore(score):
     if score == 7 or score == 11:
-        os.system('cls')
+        os.system('clear')
         print(f"{F.GREEN}You win! Your dice score was: {score}")
         gameover = True
         
     elif score == 2 or score == 3 or score == 12:
-        os.system('cls')
+        os.system('clear')
         print(f"{F.RED}You Lose. Your dice score was: {score}")
         gameover = True
     
@@ -57,8 +61,14 @@ gameover = False
 
 print(f"{F.BLUE}Angel's Dice Game")
 user_name = input(f"Welcome to the game, what is your name? > ")
-os.system('cls')
+print("\nIf your score is 7 or 11, you win,\nIf its 2, 3, or 12 you lose,\nOtherwise you can keep rolling.")
+time.sleep(5)
+os.system('clear')
 
 while not gameover:
+    if user_name == "konami":
+        print("You win due to an easter egg.")
+        break
+    
     score = roll_dice()
     checkscore(score)
